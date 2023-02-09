@@ -21,4 +21,6 @@ public class IndexTests
 
 		Assert.Contains("We're sorry but it's raining here.", sut.WeatherDescription);
 	}
+
+
 }

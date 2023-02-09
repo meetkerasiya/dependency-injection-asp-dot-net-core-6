@@ -23,8 +23,14 @@ global using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using TennisBookings.BackgroundService;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using TennisBookings.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var services= builder.Services;
+
+services.AddTransient<IWeatherForecaster,AmazingWeatherForecaster>();
+
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages(options =>

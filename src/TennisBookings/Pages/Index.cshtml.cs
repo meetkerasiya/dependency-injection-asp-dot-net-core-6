@@ -4,7 +4,15 @@ namespace TennisBookings.Pages
 {
     public class IndexModel : PageModel
     {
-		
+		private readonly IWeatherForecaster _weatherForecaster;
+		private readonly ILogger<IndexModel> _logger;
+
+		public IndexModel(IWeatherForecaster weatherForecaster, ILogger<IndexModel> logger)
+		{
+			_weatherForecaster = weatherForecaster;
+			_logger= logger;
+		}
+
 		public string WeatherDescription { get; private set; } =
             "We don't have the latest weather information right now, " +
 			"please check again later.";
@@ -15,11 +23,11 @@ namespace TennisBookings.Pages
 
         public async Task OnGet()
         {
-			var forecaster = new RandomWeatherForecaster();
+			
 
             try
             {
-                var currentWeather = await forecaster
+                var currentWeather = await _weatherForecaster
 					.GetCurrentWeatherAsync("Eastbourne");
 
                 switch (currentWeather.Weather.Summary)
@@ -47,7 +55,7 @@ namespace TennisBookings.Pages
             }
             catch
             {
-				// TODO
+				_logger.LogError("Oh no!! An error occured");
 			}
         }
     }
