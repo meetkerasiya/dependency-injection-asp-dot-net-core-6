@@ -5,6 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+var services= builder.Services;
+
+services.AddRazorPages();
+services.AddTransient<IGuidService, GuidService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
