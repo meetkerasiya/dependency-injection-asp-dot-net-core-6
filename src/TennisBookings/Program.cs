@@ -24,12 +24,23 @@ using Microsoft.Data.Sqlite;
 using TennisBookings.BackgroundService;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using TennisBookings.Shared;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var services= builder.Services;
 
-services.AddTransient<IWeatherForecaster,AmazingWeatherForecaster>();
+services.TryAddTransient<IWeatherForecaster,AmazingWeatherForecaster>();
+services.TryAddTransient<IWeatherForecaster,RandomWeatherForecaster>();
+services.TryAddScoped<ICourtBookingService,CourtBookingService>();
+services.TryAddSingleton<IUtcTimeService,TimeService>();
+services.TryAddScoped<IBookingService,BookingService>();
+services.TryAddScoped<ICourtService,CourtService>();
+
+services.TryAddScoped<ICourtBookingManager, CourtBookingManager>();
+services.Configure<BookingConfiguration>(builder.Configuration.GetSection("CourtBookings"));
+services.TryAddScoped<IBookingRuleProcessor,BookingRuleProcessor>();
+services.TryAddSingleton<INotificationService,EmailNotificationService>();
 
 services.Configure<FeaturesConfiguration>(builder.Configuration.GetSection("Features"));
 
